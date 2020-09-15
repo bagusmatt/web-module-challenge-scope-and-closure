@@ -30,7 +30,7 @@ function processFirstItem(stringList, callback) {
  * 2. Which of the two uses a closure? How can you tell?
  *  counter 1 has a closure. It is because 'function counter() {}' is whithin 'functionMaker (){}'
  * 3. In what scenario would the counter1 code be preferable? In what scenario would counter2 be better?
- *
+ *  counter1 would be helpful if everytime you wanted to invoke the function it will reset count and alter it in the same way. counter2 is better if you want the count to be independant and have multiple function able to use and change it in different ways.
  */
 
 // counter1 code
@@ -42,7 +42,7 @@ function counterMaker() {
 }
 
 const counter1 = counterMaker();
-
+console.log(counter1());
 // counter2 code
 let count = 0;
 
@@ -54,9 +54,12 @@ function counter2() {
 
 Write a function called `inning` that returns a random number of points that a team scored in an inning. This should be a whole number between 0 and 2. */
 
-function inning(/*Code Here*/) {
-  /*Code Here*/
+function inning() {
+  // console.log(Math.floor(Math.random() * 3));
+  return Math.floor(Math.random() * 3);
 }
+inning();
+// console.log(inning);
 
 /* Task 3: finalScore()
 
@@ -72,9 +75,20 @@ finalScore(inning, 9) might return:
 
 */
 
-function finalScore(/*code Here*/) {
-  /*Code Here*/
+function finalScore(callback, numInnings) {
+  let home = 0;
+  let away = 0;
+
+  for (i = 0; i < numInnings; i++) {
+    home = home + callback();
+    away += callback();
+  }
+  let final = { Home: home, Away: away };
+
+  return final;
 }
+
+console.log(finalScore(inning, 9));
 
 /* Task 4: 
 
@@ -96,6 +110,17 @@ and returns the score at each pont in the game, like so:
 9th inning: awayTeam - homeTeam
 Final Score: awayTeam - homeTeam */
 
-function scoreboard(/* CODE HERE */) {
-  /* CODE HERE */
+function scoreboard(getInningScore, inningCB, numInnings) {
+  let home = 0;
+  let away = 0;
+
+  for (let i = 0; i < numInnings; i++) {
+    let inning = getInningScore(inningCB, 1);
+
+    home = home + inning.Home;
+    away = away + inning.Away;
+
+    console.log(`${i + 1}st Inning: ${away} - ${home}`);
+  }
 }
+scoreboard(finalScore, inning, 9);
